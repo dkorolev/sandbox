@@ -1,6 +1,10 @@
 CC=gcc
 CPP=g++
 
+CFLAGS=-O3
+CC += ${CFLAGS}
+CPP += ${CFLAGS}
+
 # Works fine with CC=clang, CPP=clang++
 
 all: main
