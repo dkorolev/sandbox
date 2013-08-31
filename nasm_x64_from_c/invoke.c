@@ -1,4 +1,8 @@
-extern void foo();
+#include <string.h>
+
+extern void foo(const char*, long long);
+
 int main() {
-  foo();
+  const char* s = "Hehe! It works!\n";
+  foo(s, strlen(s));
 }

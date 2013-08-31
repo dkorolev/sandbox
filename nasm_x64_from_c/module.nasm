@@ -6,10 +6,10 @@ message db "Hello World!",0x0a,0x00
 
 section .text
 foo:
-mov rax,1
-mov rdx,13
-mov rsi,message
-mov rdi,1
+mov rax, 1
+mov rdx, rsi
+mov rsi, rdi
+mov rdi, 1
 syscall
 
 mov rax,60
