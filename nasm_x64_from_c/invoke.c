@@ -6,9 +6,9 @@ extern double add(const double*);
 
 int main() {
   const char* s = "Hehe! It works!\n";
-  const double x[2] = { 1.0, 10.0 };
+  const double x[5] = { 1, 12, 3, 10, 3 };
   printf("Begin.\n");
   foo(s, strlen(s));
-  printf("%lf\n", add(x));  // Prints x[0] + x[1] == 11.0.
+  printf("%lf\n", add(x));  // ((((1 + 12) - 3) * 10) / 3) == 33.(3)
   printf("End.\n");
 }
