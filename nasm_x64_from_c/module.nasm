@@ -1,6 +1,6 @@
 [bits 64]
 
-global foo, bar
+global foo, add
 
 section .text
 
@@ -12,6 +12,8 @@ mov rdi, 1
 syscall
 ret
 
-bar:
-movq xmm0, [rdi+8]  ; extracts x[1] when presented an array of doubles.
+add:
+movq xmm0, [rdi]
+movq xmm1, [rdi+8]
+addpd xmm0, xmm1
 ret
