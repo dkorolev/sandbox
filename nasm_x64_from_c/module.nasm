@@ -1,8 +1,6 @@
 [bits 64]
-global foo
 
-section .data
-message db "Hello World!",0x0a,0x00
+global foo
 
 section .text
 foo:
