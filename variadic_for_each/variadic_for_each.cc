@@ -1,5 +1,7 @@
 #include <iostream>
-#include <tuple>
+
+#include <boost/fusion/include/algorithm.hpp>
+#include <boost/fusion/include/vector.hpp>
 
 struct a {
   static void f() {
@@ -9,19 +11,23 @@ struct a {
 
 struct b {
   static void f() {
-    std::cout << "a::f();" << std::endl;\
+    std::cout << "b::f();" << std::endl;\
   }
 };
 
 struct c {
   static void f() {
-    std::cout << "a::f();" << std::endl;\
+    std::cout << "c::f();" << std::endl;\
   }
 };
 
+struct run_f {
+  template <typename T> void operator()(T) const {
+    T::f();
+  };
+};
+
 int main() {
-  typedef std::tuple<a, b, c> typelist;
-  a::f();
-  b::f();
-  c::f();
+  boost::fusion::vector<a, b, c> typelist;
+  boost::fusion::for_each(typelist, run_f());
 }
