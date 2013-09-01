@@ -11,9 +11,9 @@ int main() {
   double a[100];
   printf("Begin.\n");
   foo(s, strlen(s));
-  printf("Expected: %lf\n", exp(x[0]) + log(x[1]));
+  printf("Expected: %lf\n", exp(x[0]) + log(x[1]) + sin(x[2]));
   printf("Actual: %lf\n", do_math(x, a));
   printf("Actual: %lf\n", do_math(x, a));
-  printf("XXX: %lf %lf %lf %lf %lf\n", a[0], a[1], a[2], a[3], a[4]);
+  printf("XXX: %lf %lf %lf %lf %lf %lf %lf %lf\n", a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7]);
   printf("End.\n");
 }

@@ -14,80 +14,68 @@ syscall
 ret
 
 do_math:
-; return exp(x[0]) + log(x[1])
+; return exp(x[0]) + log(x[1]) + sin(x[2])
 ; a[0] = x[0]
-; a[0] = exp(a[0])
-; a[1] = x[1]
-; a[1] = log(x[1])
-; a[2] = a[0] + a[1]
-; return a[2]
-;mov rax, 0
-;movq xmm1, rax
+; a[1] = exp(a[0])
+; a[2] = x[1]
+; a[3] = log(a[2])
+; a[4] = x[2]
+; a[5] = sin(a[4])
+; a[6] = a[1] + a[3]
+; a[7] = a[6] + a[5]
+; return a[7]
 
 ; a[0] = x[0]
 mov rax, [rdi]
 mov [rsi], rax
 
-; a[0] = exp(a[0])
+; a[1] = exp(a[0])
 movq xmm0, [rsi]
 push rdi
 push rsi
 call exp
 pop rsi
 pop rdi
-movq [rsi], xmm0
+movq [rsi+8], xmm0
 
-; a[1] = x[1]
+; a[2] = x[1]
 mov rax, [rdi+8]
-mov [rsi+8], rax
+mov [rsi+16], rax
 
-; a[1] = log(a[1])
-movq xmm0, [rsi+8]
+; a[3] = log(a[2])
+movq xmm0, [rsi+16]
 push rdi
 push rsi
 call log
 pop rsi
 pop rdi
-movq [rsi+8], xmm0
+movq [rsi+24], xmm0
 
-; a[2] = a[0] + a[1]
-movq xmm0, [rsi]
-movq xmm1, [rsi+8]
+; a[4] = x[2]
+mov rax, [rdi + 16]
+mov [rsi + 32], rax
+
+; a[5] = sin(a[4])
+movq xmm0, [rsi+32]
+push rdi
+push rsi
+call sin
+pop rsi
+pop rdi
+movq [rsi+40], xmm0
+
+; a[6] = a[1] + a[3]
+movq xmm0, [rsi+8]
+movq xmm1, [rsi+24]
 addpd xmm0, xmm1
-movq [rsi+16], xmm0
+movq [rsi+48], xmm0
 
-ret
+; a[7] = a[6] + a[5]
+movq xmm0, [rsi+48]
+movq xmm1, [rsi+40]
+addpd xmm0, xmm1
+movq [rsi+56], xmm0
 
-movq xmm0, [rdi]
-;push rdi
-call exp
-;pop rdi
-;addpd xmm1, xmm0
-ret
-
-;movq xmm0, [rdi+8]
-;push rdi
-;call log
-;pop rdi
-;addpd xmm1, xmm0
-
-movq xmm0, xmm1
-ret
-
-
-movq xmm0, [rdi+16]
-push rdi
-;call sin
-pop rdi
-subpd xmm1, xmm0
-movq xmm0, [rdi+24]
-push rdi
-call cos
-pop rdi
-mulpd xmm1, xmm0
-movq xmm0, [rdi+32]
-push rdi
-call atan
-pop rdi
-divpd xmm1, xmm0
+; return a[7]
+movq xmm0, [rsi+56]
 ret
