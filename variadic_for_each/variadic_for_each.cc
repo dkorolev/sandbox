@@ -1,4 +1,5 @@
 #include <iostream>
+#include <tuple>
 
 struct a {
   static void f() {
@@ -19,6 +20,7 @@ struct c {
 };
 
 int main() {
+  typedef std::tuple<a, b, c> typelist;
   a::f();
   b::f();
   c::f();
