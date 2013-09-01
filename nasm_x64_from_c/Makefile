@@ -9,7 +9,7 @@ invoke.o: invoke.c
 	$(CC) -c $< -o $@
 
 invoke: invoke.o module.o
-	$(CC) -o $@ invoke.o module.o
+	$(CC) -o $@ invoke.o module.o -lm
 
 clean:
 	rm -f module.o invoke.o invoke
