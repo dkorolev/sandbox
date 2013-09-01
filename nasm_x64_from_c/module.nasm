@@ -1,6 +1,6 @@
 [bits 64]
 
-global foo, do_math
+global foo, do_math, do_dim
 extern exp, log, sin, cos, tan, atan
 
 section .text
@@ -11,6 +11,10 @@ mov rdx, rsi
 mov rsi, rdi
 mov rdi, 1
 syscall
+ret
+
+do_dim:
+mov rax, 42
 ret
 
 do_math:
