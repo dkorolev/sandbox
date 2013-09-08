@@ -3,7 +3,7 @@ CC=gcc  # Works with clang as well.
 all: invoke
 
 module.o: module.nasm
-	nasm -g -f elf64 -o $@ $<
+	nasm -f elf64 -o $@ $<
 
 invoke.o: invoke.c
 	$(CC) -c $< -o $@
