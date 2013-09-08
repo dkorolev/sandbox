@@ -3,13 +3,14 @@ CC=g++  # Works with clang++ as well.
 all: main
 
 main: main.cc lib.so
-	${CC} -o $@ $< -ldl
+	${CC} -o $@ $< -lm -ldl
 
 lib.o: module.nasm
-	nasm -shared -f elf64 -o $@ $<
+	nasm -f elf64 -o $@ $<
 
 lib.so: lib.o
-	ld -shared -o $@ $< -lm
+	ld -lm -shared -o $@ $<
+#	g++ -fPIC -static -lm -shared -o $@ $<
 
 clean:
 	rm -f main lib.o lib.so

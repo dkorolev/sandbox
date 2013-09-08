@@ -1,5 +1,3 @@
-default rel
-
 [bits 64]
 
 global eval, dim
@@ -15,7 +13,7 @@ eval:
   movq xmm0, [rsi+0]
   push rdi
   push rsi
-  call atan wrt ..plt
+  call atan
   pop rsi
   pop rdi
   movq [rsi+8], xmm0
@@ -26,7 +24,7 @@ eval:
   movq xmm0, [rsi+16]
   push rdi
   push rsi
-  call tan wrt ..plt
+  call tan
   pop rsi
   pop rdi
   movq [rsi+24], xmm0
@@ -37,7 +35,7 @@ eval:
   movq xmm0, [rsi+32]
   push rdi
   push rsi
-  call cos wrt ..plt
+  call cos
   pop rsi
   pop rdi
   movq [rsi+40], xmm0
@@ -48,7 +46,7 @@ eval:
   movq xmm0, [rsi+48]
   push rdi
   push rsi
-  call sin wrt ..plt
+  call sin
   pop rsi
   pop rdi
   movq [rsi+56], xmm0
@@ -59,8 +57,7 @@ eval:
   movq xmm0, [rsi+64]
   push rdi
   push rsi
-  call log wrt ..plt
-
+  call log
   pop rsi
   pop rdi
   movq [rsi+72], xmm0
@@ -71,7 +68,7 @@ eval:
   movq xmm0, [rsi+80]
   push rdi
   push rsi
-  call exp wrt ..plt
+  call exp
   pop rsi
   pop rdi
   movq [rsi+88], xmm0
