@@ -1,24 +1,30 @@
-// #include <chrono> -- seems to not work well in clang as of 2013-09-09.
-// clock() only measures user time, not system("sleep 3").
-
 #include <ctime>
 #include <iomanip>
 #include <iostream>
 #include <string>
 #include <cstdlib>
 
+#include <sys/time.h>
+
+double get_wall_time_seconds(){
+  // Single-threaded implementation.
+  // #include <chrono> not friendly with clang++.
+  // clock() and boost::time measure CPU time, not wall time.
+  // More advanced Boost timer seems to be not present in my Ubuntu 12.04 as of 2013-09-10.
+  static struct timeval time;
+  gettimeofday(&time, NULL);
+  return (double)time.tv_sec + (double)time.tv_usec * .000001;
+}
+
 int fib(int a) {
   return a <= 2 ? 1 : fib(a-1) + fib(a-2);
 }
 
 int main() {
-  //std::chrono::high_resolution_clock timer;
-  clock_t begin = clock();
-//  auto begin = timer.now();
- // std::cout << fib(40) << std::endl;
- system("sleep 3");
-//  double duration = std::chrono::duration_cast<std::chrono::duration<int, std::milli>>(timer.now() - begin).count() * 0.001;
-  clock_t end = clock();
-  double diff = double(end - begin) / CLOCKS_PER_SEC;
+  double begin = get_wall_time_seconds();
+  std::cout << fib(40) << std::endl;
+  system("sleep 3");
+  double end = get_wall_time_seconds();
+  double diff = end - begin;
   std::cout << std::fixed << std::setprecision(2) << diff << "s." << std::endl;
 }
