@@ -20,9 +20,10 @@ int main(int argc, char** argv) {
     assert(N >= 1 && N <= 10000);
     assert(Q >= 0.0 && Q <= 1.0);
     srand(RS);
+    // Generate the edges. Loops are allowed.
     std::vector<std::pair<int, int> > E;
-    for (size_t i = 1; i < N; ++i) {
-      for (size_t j = i + 1; j <= N; ++j) {
+    for (size_t i = 1; i <= N; ++i) {
+      for (size_t j = i; j <= N; ++j) {
         E.push_back(std::make_pair(i, j));
       }
     }

@@ -6,9 +6,8 @@ gen: gen.cc
 baseline: baseline.cc
 	g++ -o $@ $<
 
-# FIXME: Actually test the MapReduce solution.
-mapreduce: baseline.cc
-	g++ -o $@ $<
+mapreduce: mapreduce.cc
+	g++ --std=c++0x -o $@ $<
 
 test: all
 	./test.sh
