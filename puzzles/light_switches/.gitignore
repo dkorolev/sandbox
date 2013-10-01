@@ -3,3 +3,5 @@ apply
 solve
 *.o
 *~
+lights.txt
+switches.txt
