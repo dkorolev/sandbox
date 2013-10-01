@@ -18,8 +18,6 @@ int main(int argc, char** argv) {
     const size_t D = N*N;
     std::vector<std::vector<int> > A(D, std::vector<int>(D, 0));
     std::vector<int> B(D, 0);
-    std::vector<std::vector<int> > A0 = A;
-    std::vector<int> B0 = B;
 
     // Construct the system of equations.
     const int di[5] = { 0, +1, -1,  0,  0 };
@@ -39,6 +37,9 @@ int main(int argc, char** argv) {
       }
     }
 
+    std::vector<std::vector<int> > A0 = A;
+    std::vector<int> B0 = B;
+
     // Solve the system of equations using Gaussian elimination.
     for (size_t x = 0; x < D; ++x) {
       // Isolate variable x.
@@ -54,11 +55,7 @@ int main(int argc, char** argv) {
       }
 
       if (y == D) {
-        fprintf(stderr,
-                "Matrix not of full rank."
-                " No solution or multiple solutions."
-                " FIXME.\n");
-        return 1;
+        break;
       }
 
       // Move row y into the position of row x if necessary.
