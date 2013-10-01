@@ -42,11 +42,9 @@ int main(int argc, char** argv) {
 
     // Solve the system of equations using Gaussian elimination.
     for (size_t x = 0; x < D; ++x) {
-      // Isolate variable x.
-      // First, find the equation where the coefficient before x is one,
-      // if it can't be found then the system has no solution.
+      // First, find the equation where the coefficient before x is one.
       // Start from row x since rows above x are already fixed
-      // to become part of the diagonal matrx.
+      // to become part of the diagonal (or almost diagonal) matrx.
       size_t y = D;
       for (size_t j = x; j < D && y == D; ++j) {
         if (A[j][x]) {
@@ -54,32 +52,33 @@ int main(int argc, char** argv) {
         }
       }
 
-      if (y == D) {
-        break;
-      }
+      if (y != D) {
+        // Move row y into the position of row x if necessary.
+        if (y != x) {
+          std::swap(A[y], A[x]);
+          std::swap(B[y], B[x]);
+        }
 
-      // Move row y into the position of row x if necessary.
-      if (y != x) {
-        std::swap(A[y], A[x]);
-        std::swap(B[y], B[x]);
-      }
-
-      // Now eliminate x from all other equations.
-      for (size_t i = 0; i < D; ++i) {
-        if (i != x && A[i][x]) {
-          for (size_t j = 0; j < D; ++j) {
-            A[i][j] ^= A[x][j];
+        // Now eliminate x from all other equations.
+        for (size_t i = 0; i < D; ++i) {
+          if (i != x && A[i][x]) {
+            for (size_t j = 0; j < D; ++j) {
+              A[i][j] ^= A[x][j];
+            }
+            B[i] ^= B[x];
           }
-          B[i] ^= B[x];
         }
       }
     }
 
     // Construct the solution.
-    // The matrix A is either diagonal, or has some "slack" at the right.
+    // The matrix A is either diagonal, or has some "slack".
     // If the matrix is diagonal, the solution is trivial.
-    // If the matrix is not just a diagonal matrix, determine the values
-    // of the variables that can be determined, and assume the rest to be 0.
+    // If the matrix is not just a diagonal matrix, determine the values of
+    // the variables that can be uniquely determined, assume the rest to be 0.
+    // Then, if the resulting solution fits, it is the solution, and
+    // if it does not fit, one of the remaining equations serve as the proof
+    // that the solution can not exist.
     std::vector<int> solution(D, 0);
     for (size_t i = 0; i < D; ++i) {
       if (A[i][i]) {
@@ -87,7 +86,7 @@ int main(int argc, char** argv) {
       }
     }
 
-    // Now test the solution for correctness.
+    // Test the solution for correctness.
     // For full rank matrices it would always be correct.
     // For non-full rank matrices it is either correct, or a contradiction
     // has been found, in which case the right solution is "no solution".
