@@ -8,66 +8,17 @@
 #include <cassert>
 #include <cstring>
 
-// struct exec_friendly_allocator requires --std=c++0x.
-#include <limits>
-template<typename T> struct exec_friendly_allocator {
-  static_assert(sizeof(T) == 1, "exec_friendly_allocator operates on unit sized types only.");
-
-  typedef T value_type;
-  typedef value_type* pointer;
-  typedef const value_type* const_pointer;
-  typedef value_type& reference;
-  typedef const value_type& const_reference;
-  typedef std::size_t size_type;
-  typedef std::ptrdiff_t difference_type;
-
-  template<typename U> struct rebind {
-    typedef exec_friendly_allocator<U> other;
-  };
-
-  inline explicit exec_friendly_allocator() {}
-  inline ~exec_friendly_allocator() {}
-  inline explicit exec_friendly_allocator(exec_friendly_allocator const&) {}
-  template<typename U> inline explicit exec_friendly_allocator(exec_friendly_allocator<U> const&) {}
-
-  inline pointer address(reference r) { return &r; }
-  inline const_pointer address(const_reference r) { return &r; }
-
-  inline pointer allocate(size_type size, typename std::allocator<void>::const_pointer = nullptr) {
-    const int pagesize = getpagesize();
-    void* tmp;
-    if (!posix_memalign(&tmp, pagesize, size * sizeof(T))) {
-      mprotect(tmp, size, PROT_READ | PROT_WRITE | PROT_EXEC);
-      return reinterpret_cast<pointer>(tmp);
-    } else {
-      throw std::bad_alloc();
-    }
-  }
-
-  inline void deallocate(pointer p, size_type) { 
-    free(p);
-  }
-
-  inline size_type max_size() const { 
-    return std::numeric_limits<size_type>::max() / sizeof(T);
-  }
-
-  inline void construct(pointer p, const T& t) { new(p) T(t); }
-  inline void destroy(pointer p) { p->~T(); }
-
-  inline bool operator==(exec_friendly_allocator const&) { return true; }
-  inline bool operator!=(exec_friendly_allocator const& a) { return !operator==(a); }
-};
+#include "exec_friendly_allocator.h"
 
 typedef int (*DIM)();
 typedef double (*EVAL)(const double*, double*);
 
 int main() {
-  // 0. Run the function from static data.
+  // 0. Run function from static machine code.
   {
     // Machine code is copied from the output of step 3 below.
-    const unsigned char binary[] = { 0x48,0xb8,0x00,0x00,0x00,0x00,0x00,0x00,0x45,0x40,0x48,0x89,0x06,0xf3,0x0f,0x7e,0x06,0xc3, };
-    std::vector<unsigned char, exec_friendly_allocator<unsigned char> > static_buf(binary, binary + sizeof(binary)/sizeof(binary[0]));
+    const unsigned char code[] = { 0x48,0xb8,0x00,0x00,0x00,0x00,0x00,0x00,0x45,0x40,0x48,0x89,0x06,0xf3,0x0f,0x7e,0x06,0xc3, };
+    std::vector<unsigned char, exec_friendly_allocator<unsigned char> > static_buf(code, code + sizeof(code)/sizeof(code[0]));
     EVAL eval_static = reinterpret_cast<EVAL>(&static_buf[0]);
     std::vector<double> x(1, 1.0);
     std::vector<double> a(1);
