@@ -1,0 +1,7 @@
+gen
+baseline
+mapreduce
+*~
+input.txt
+golden.txt
+output.txt
