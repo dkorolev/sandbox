@@ -76,8 +76,8 @@ int main() {
 
   void *lib = dlopen("./lib.so", RTLD_LAZY);
   if (lib) {
-    const void* ptr_dim = dlsym(lib, "dim");
-    const void* ptr_eval = dlsym(lib, "eval");
+    void* ptr_dim = dlsym(lib, "dim");
+    void* ptr_eval = dlsym(lib, "eval");
     if (ptr_dim && ptr_eval) {
       // 1. Run the function from the library.
       DIM dim = reinterpret_cast<DIM>(ptr_dim);

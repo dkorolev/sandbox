@@ -1,4 +1,4 @@
-CC=g++  # Works with clang++ as well.
+CC=clang++  # Works with clang++ as well.
 
 all: main
 
