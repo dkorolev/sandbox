@@ -10,8 +10,8 @@ void test1() {
 
   auto start_time = timer.now();
 
-  x.push_back(1);
-  x.push_back(1);
+  x.push_back(42);
+  x.push_back(43);
   for(int i = 2; i < 10000000; i++) {
     x.push_back(x[i-2] + x[i-1]);
   }
