@@ -1,0 +1,9 @@
+{
+    "name": "test",
+    "description": "test",
+    "private": true,
+    "dependencies": {
+        "express": "*",
+        "node-kafka": "*"
+    }
+}
