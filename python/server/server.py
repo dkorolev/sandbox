@@ -7,17 +7,30 @@ hdlr.setFormatter(formatter)
 log.addHandler(hdlr) 
 log.setLevel(logging.INFO)
 
-from flask import Flask
+import json
+from flask import Flask, request
 
 app = Flask(__name__)
 app.debug = True
 
+content_type = 'text/plain; charset=utf-8'
+response_params = {'Content-type': content_type}
+
 @app.route("/")
 def index():
-    log.info("/")
-    content = 'OK'
-    content_type = 'text/plain; charset=utf-8'
-    return content, 200, {'Content-type': content_type}
+    log.info('GET /')
+    content = 'OK\n'
+    return content, 200, response_params
+
+@app.route('/', methods=['POST'])
+def post():
+    log.info('POST /')
+    log.info(request.data)
+    try:
+        data = json.loads(request.data)
+        return 'POST\n', 200, response_params
+    except ValueError:
+        return 'Invalid JSON\n', 415, response_params
 
 if __name__ == '__main__':
     app.run()
