@@ -1,9 +1,9 @@
 all: client server
 
-client: CppClient.cpp gen-cpp/deps
+client: client.cc gen-cpp/deps
 	g++ -o $@ $< gen-cpp/*.o -static -lthrift
 
-server: CppServer.cpp gen-cpp/deps
+server: server.cc gen-cpp/deps
 	g++ -o $@ $< gen-cpp/*.o -static -lthrift
 
 gen-cpp/deps: dima.thrift
