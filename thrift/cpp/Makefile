@@ -1,10 +1,12 @@
+CC=g++ --std=c++11
+
 all: client server
 
 client: client.cc gen-cpp/deps
-	g++ -o $@ $< gen-cpp/*.o -static -lthrift
+	${CC} -o $@ $< gen-cpp/*.o -static -lthrift
 
 server: server.cc gen-cpp/deps
-	g++ -o $@ $< gen-cpp/*.o -static -lthrift
+	${CC} -o $@ $< gen-cpp/*.o -static -lthrift
 
 gen-cpp/deps: dima.thrift
 	thrift --gen cpp -r $<
