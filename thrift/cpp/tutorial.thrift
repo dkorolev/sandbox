@@ -120,6 +120,10 @@ exception InvalidOperation {
  * Ahh, now onto the cool part, defining a service. Services just need a name
  * and can optionally inherit from another service using the extends keyword.
  */
+struct LogEntry {
+  1: i64 ms
+}
+
 service Calculator extends shared.SharedService {
 
   /**
@@ -140,8 +144,9 @@ service Calculator extends shared.SharedService {
     * a request and does not listen for any response at all. Oneway methods
     * must be void.
     */
-   oneway void zip()
+   oneway void zip(),
 
+   oneway void push_entry(1:LogEntry w)
 }
 
 /**

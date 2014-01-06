@@ -46,6 +46,10 @@ int main(int argc, char** argv) {
   try {
     transport->open();
 
+    LogEntry e;
+    e.ms = 42;
+    client.push_entry(e);
+    /*
     client.ping();
     printf("ping()\n");
 
@@ -75,6 +79,7 @@ int main(int argc, char** argv) {
     SharedStruct ss;
     client.getStruct(ss, 1);
     printf("Check log: %s\n", ss.value.c_str());
+*/
 
     transport->close();
   } catch (TException &tx) {

@@ -97,6 +97,10 @@ class CalculatorHandler : public CalculatorIf {
     return val;
   }
 
+  void push_entry(const LogEntry& e) {
+    printf("LOG: %lld\n", e.ms);
+  }
+
   void getStruct(SharedStruct &ret, const int32_t logid) {
     printf("getStruct(%d)\n", logid);
     ret = log[logid];
