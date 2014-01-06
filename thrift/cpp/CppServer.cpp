@@ -30,7 +30,8 @@
 #include <stdexcept>
 #include <sstream>
 
-#include "./gen-cpp/Calculator.h"
+//#include "./gen-cpp/Calculator.h"
+#include "./gen-cpp/Dima.h"
 
 using namespace std;
 using namespace apache::thrift;
@@ -43,6 +44,7 @@ using namespace shared;
 
 using namespace boost;
 
+/*
 class CalculatorHandler : public CalculatorIf {
  public:
   CalculatorHandler() {}
@@ -97,10 +99,6 @@ class CalculatorHandler : public CalculatorIf {
     return val;
   }
 
-  void push_entry(const LogEntry& e) {
-    printf("LOG: %lld\n", e.ms);
-  }
-
   void getStruct(SharedStruct &ret, const int32_t logid) {
     printf("getStruct(%d)\n", logid);
     ret = log[logid];
@@ -114,12 +112,24 @@ protected:
   map<int32_t, SharedStruct> log;
 
 };
+*/
+
+class DimaHandler : public DimaIf {
+ public:
+  DimaHandler() {}
+
+  void push(const Entry& e) {
+    printf("LOG: %lld %lld %s\n", e.ms, e.value, e.message.c_str());
+  }
+};
 
 int main(int argc, char **argv) {
 
   shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
-  shared_ptr<CalculatorHandler> handler(new CalculatorHandler());
-  shared_ptr<TProcessor> processor(new CalculatorProcessor(handler));
+//  shared_ptr<CalculatorHandler> handler(new CalculatorHandler());
+//  shared_ptr<TProcessor> processor(new CalculatorProcessor(handler));
+  shared_ptr<DimaHandler> handler(new DimaHandler());
+  shared_ptr<TProcessor> processor(new DimaProcessor(handler));
   shared_ptr<TServerTransport> serverTransport(new TServerSocket(9090));
   shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
 

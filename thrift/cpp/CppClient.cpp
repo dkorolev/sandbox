@@ -25,7 +25,8 @@
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TTransportUtils.h>
 
-#include "./gen-cpp/Calculator.h"
+//#include "./gen-cpp/Calculator.h"
+#include "./gen-cpp/Dima.h"
 
 using namespace std;
 using namespace apache::thrift;
@@ -41,14 +42,17 @@ int main(int argc, char** argv) {
   shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
   shared_ptr<TTransport> transport(new TBufferedTransport(socket));
   shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-  CalculatorClient client(protocol);
+//  CalculatorClient client(protocol);
+  DimaClient client(protocol);
 
   try {
     transport->open();
 
-    LogEntry e;
+    Entry e;
     e.ms = 42;
-    client.push_entry(e);
+    e.value = 123;
+    e.message = "Hello, World!";
+    client.push(e);
     /*
     client.ping();
     printf("ping()\n");
