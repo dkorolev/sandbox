@@ -1,4 +1,4 @@
-#include "gen-cpp/Dima.h"
+#include "gen-cpp/DimaService.h"
 
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/server/TSimpleServer.h>
@@ -14,9 +14,9 @@ using namespace ::apache::thrift::server;
 
 using namespace ::dima;
 
-class DimaHandler : virtual public DimaIf {
+class DimaHandler : virtual public DimaServiceIf {
  public:
-  void push(const Entry& e) {
+  void dima_push(const DimaEntry& e) {
     ++count;
     sum += e.value;
     entries.push_back(e);
@@ -25,7 +25,7 @@ class DimaHandler : virtual public DimaIf {
     }
     std::cout << e.ms << ' ' << e.value << ' ' << e.message << ' ' << sizeof(e.ms) << std::endl;
   }
-  void stats(Stats& out_stats) {
+  void dima_stats(DimaStats& out_stats) {
     out_stats.count = count;
     out_stats.sum = sum;
     out_stats.last_three.clear();
@@ -37,13 +37,13 @@ class DimaHandler : virtual public DimaIf {
  private:
   uint32_t count = 0;
   uint64_t sum = 0;
-  std::deque<Entry> entries;
+  std::deque<DimaEntry> entries;
 };
 
 int main() {
   const int port = 9090;
   boost::shared_ptr<DimaHandler> handler(new DimaHandler());
-  boost::shared_ptr<TProcessor> processor(new DimaProcessor(handler));
+  boost::shared_ptr<TProcessor> processor(new DimaServiceProcessor(handler));
   boost::shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
   boost::shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
   boost::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());

@@ -6,7 +6,7 @@
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TTransportUtils.h>
 
-#include "./gen-cpp/Dima.h"
+#include "./gen-cpp/DimaService.h"
 
 using namespace std;
 using namespace apache::thrift;
@@ -20,19 +20,19 @@ int main(int argc, char** argv) {
   boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
   boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
 
-  DimaClient client(protocol);
+  DimaServiceClient client(protocol);
 
   try {
     transport->open();
 
-    Entry e;
+    DimaEntry e;
     e.ms = 42;
     e.value = 123;
     e.message = "Hello, World!";
-    client.push(e);
+    client.dima_push(e);
     
-    Stats s;
-    client.stats(s);
+    DimaStats s;
+    client.dima_stats(s);
     std::cout << s.count << ' ' << s.sum << ' ' << s.last_three.size() << std::endl;
 
     transport->close();

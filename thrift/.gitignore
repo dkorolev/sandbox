@@ -2,3 +2,4 @@ client
 server
 gen-cpp/
 gen-nodejs/
+node_modules/
