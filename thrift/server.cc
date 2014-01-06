@@ -5,7 +5,12 @@
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
 
+#include <chrono>
 #include <deque>
+
+uint64_t js_date_now() {
+  return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+}
 
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
@@ -23,6 +28,7 @@ class DimaHandler : virtual public DimaServiceIf {
     while (entries.size() > 3) {
       entries.pop_front();
     }
+    std::cout << "Ping: " << (js_date_now() - e.ms) << "ms" << std::endl;
     std::cout << e.ms << ' ' << e.value << ' ' << e.message << ' ' << sizeof(e.ms) << std::endl;
   }
   void dima_stats(DimaStats& out_stats) {
