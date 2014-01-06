@@ -34,7 +34,6 @@ using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 
 using namespace tutorial;
-using namespace shared;
 
 using namespace boost;
 

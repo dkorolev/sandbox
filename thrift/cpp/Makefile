@@ -6,7 +6,7 @@ client: CppClient.cpp gen-cpp/deps
 server: CppServer.cpp gen-cpp/deps
 	g++ -o $@ $< gen-cpp/*.o -static -lthrift
 
-gen-cpp/deps: tutorial.thrift shared.thrift
+gen-cpp/deps: tutorial.thrift
 	thrift --gen cpp -r $<
 	(cd gen-cpp; for i in `ls *.cpp | grep -v skeleton` ; do g++ -c $$i ; done)
 	echo OK >$@

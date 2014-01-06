@@ -40,7 +40,7 @@ using namespace apache::thrift::transport;
 using namespace apache::thrift::server;
 
 using namespace tutorial;
-using namespace shared;
+//using namespace shared;
 
 using namespace boost;
 
