@@ -40,12 +40,12 @@ function<void(function<void(int)>)> filter(
 }
 
 int main() {
-  // Assign a lambda into to an auto variable.
+  // Assign a lambda to an auto variable.
   auto print = [](int x) {
     std::cout << x << ' ';
   };
 
-  // Assign a pre-defined function to the auto variable.
+  // Assign a pre-defined function to an auto variable.
   auto take = global_take_definition;
 
   // Assign a lambda to a typed variable.
