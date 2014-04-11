@@ -50,7 +50,10 @@ int main() {
 
   // Assign a lambda to a typed variable.
   function<void(function<void(int)>)> generator = [](function<void(int)> f) {
-    int a = 0; while (++a) { f(a); }
+    int a = 0;
+    while (true) {
+      f(++a);
+    }
   };
 
   // Print "1 2 3 4 5 6 7 8 9 10 ".
