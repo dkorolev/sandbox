@@ -72,12 +72,12 @@ int main() {
   }
 
   // Print "1 9 25 49 81 121 169 225 289 361 ".
-  // HOMEWORK: What is the type of `chain`?
-  auto chain = [](function<int(int)> a, function<void(int)> b) {
-    return [a, b](int x) {
-      b(a(x));
+  function<function<void(int)>(function<int(int)>, function<void(int)>)> chain =
+    [](function<int(int)> a, function<void(int)> b) {
+      return [a, b](int x) {
+        b(a(x));
+      };
     };
-  };
   function<int(int)> square = [](int x) {
     return x * x;
   };
